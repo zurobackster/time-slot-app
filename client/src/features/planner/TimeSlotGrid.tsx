@@ -1,5 +1,12 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
-import { DndContext, DragEndEvent, DragOverlay } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
 import { isToday, parseISO } from 'date-fns';
 import { useSessions } from '../sessions/useSessions';
 import { TimeSlot } from './TimeSlot';
@@ -26,6 +33,15 @@ export function TimeSlotGrid({ date }: Props) {
   const [activeDragItem, setActiveDragItem] = useState<any>(null);
 
   const gridRef = useRef<HTMLDivElement>(null);
+
+  // Configure drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Require 8px movement before drag starts
+      },
+    })
+  );
 
   // Generate all 48 time slots
   const timeSlots = useMemo(() => generateTimeSlots(), []);
@@ -139,7 +155,7 @@ export function TimeSlotGrid({ date }: Props) {
   }
 
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
       <div className="relative h-full">
         <div ref={gridRef} className="h-full overflow-y-auto relative">
           {/* Current time indicator */}
