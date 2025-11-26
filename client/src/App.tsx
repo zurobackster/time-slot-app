@@ -3,12 +3,9 @@ import { Layout } from './components/Layout';
 import { HomePage } from './pages/Home';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { ActivitiesPage } from './pages/ActivitiesPage';
+import PlannerPage from './pages/PlannerPage';
 
 // Placeholder components - we'll implement these next
-
-function PlannerPage() {
-  return <div>Planner Page - Coming Soon</div>;
-}
 
 function ExplorerPage() {
   return <div>Explorer Page - Coming Soon</div>;
